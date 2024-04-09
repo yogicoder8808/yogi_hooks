@@ -1,23 +1,34 @@
-import logo from './logo.svg';
+
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import './App.css';
 
 function App() {
+  const [count, setCount] = useState(0);
+  const [factor,setFactor] = useState(1);
+
+  useEffect(() => {
+   console.log ('Effect: count has changed') 
+  }, [count]);
+
+  const squardCount = useMemo (() => {
+    console.log ('Memo: Squaring count');
+    return count*count;
+  }, [count])
+
+  const increment = useCallback (()=>{
+    setCount(prevCount => prevCount + factor)
+  }, [factor])
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1> React Hooks Demo</h1>
+      <p> Count: {count} </p>
+      <p> Factor: {factor} </p>
+      <p> Squared Count: {squardCount} </p>
+      <button onClick={increment}>Increment</button>
+      <button onClick={() =>{console.log ('Callback: Doubled Factor'); 
+      setFactor(prevFactor => prevFactor * 2)}}> Doubled Factor</button>
     </div>
   );
 }
